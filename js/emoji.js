@@ -30,17 +30,11 @@ function fillDemo() {
 function submit() {
     initToastr();
 
-    //check if data exists
+    //check if data exists & is correct
     try {
-        data = JSON.parse($("#emojidata").val());
+        data = JSON.parse($("#emojidata").val())._state.usageHistory;
     } catch {
         toastr["error"]("The data could not be parsed correctly.", "Error");
-        return;
-    }
-
-    //check if data is correct
-    if (!data._state.usageHistory) {
-        toastr["error"]("The data could be parsed but is invalid.", "Error");
         return;
     }
 
