@@ -71,13 +71,13 @@ function generateStats() {
         sortedData.forEach(emojiData => {
             if (isCustom(emojiData.key)) {
                 //emoji is custom
-                appendCard(`https://cdn.discordapp.com/emojis/${emojiData.key}.png`, emojiData.totalUses)
+                appendCard(emojiData.key, `https://cdn.discordapp.com/emojis/${emojiData.key}.png`, emojiData.totalUses)
             } else {
                 //emoji is built-in
                 var emoji = allEmojis[emojiData.key];
                 if (emoji) {
                     var emojiObj = $.parseHTML(twemoji.parse(emoji.emoji))[0];
-                    if (emojiObj.attributes) appendCard(emojiObj.attributes.src.value, emojiData.totalUses)
+                    if (emojiObj.attributes) appendCard(emojiData.key, emojiObj.attributes.src.value, emojiData.totalUses)
                 }
             }
         })
@@ -91,12 +91,12 @@ function generateStats() {
     google.charts.setOnLoadCallback(drawCharts);
 }
 
-function appendCard(link, count) {
+function appendCard(key, link, count) {
     $("#emojiList").append(`
-        <div class="col-6 col-md-3 col-lg-1 mb-4">
-            <div style="padding:10px; background: linear-gradient(to right, rgba(114,137,218,0.5) ${count/usedEmoji*100}%, white ${100-count/usedEmoji*100}%);" class="card mx-auto text-center">
-                <a href="#url"><img class="card-img-top" src="${link}" alt="Sample Title"></a>
-                <p>HIO</p>
+        <div class="col-6 col-md-3 col-lg-1 mb-4" title="${count} usages, ${(count/usedEmoji*100).toFixed(2)}%">
+            <div style="padding:10px; background: linear-gradient(to right, rgba(114,137,218,0.5) ${count/usedEmoji*100}%, rgba(114,137,218,0.1) ${count/usedEmoji*100}%);" class="card mx-auto text-center">
+                <img class="card-img-top" src="${link}" alt="${key}">
+                <p style="margin-bottom:0;">${count}</p>
             </div>
         </div>
     `)
